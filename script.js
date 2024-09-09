@@ -13,59 +13,37 @@ define(["jquery"], function ($) {
         return true;
       },
       render: function () {
-        const saveButton = document.querySelector(".button-input_add");
+        const addMoreInput = document.querySelectorAll(
+          ".linked-form__field-add-multiple"
+        );
 
         const handleAddEventListener = () => {
-          var phoneInputs = document.querySelectorAll(
+          const phoneInputs = document.querySelectorAll(
             ".card-fields__fields-block .linked-form__field .control-phone__formatted"
           );
-          var addForm = document.querySelectorAll(
+          const addForm = document.querySelectorAll(
             ".linked-forms__item_is-add.expanded .linked-form__field .control-phone__formatted"
           );
-          var isValid = true;
 
           [...addForm, ...phoneInputs].forEach(function (input) {
-            input.removeEventListener("input", () => null, true);
-            input.addEventListener("input", () => {
-              phoneInputs = document.querySelectorAll(
-                ".card-fields__fields-block .linked-form__field .control-phone__formatted"
-              );
-              addForm = document.querySelectorAll(
-                ".linked-forms__item_is-add.expanded .linked-form__field .control-phone__formatted"
-              );
-              [...addForm, ...phoneInputs].forEach(function (e) {
-                var phoneNumber = e?.value?.replace(/\D/g, "");
-                if (phoneNumber?.length > 10) {
-                  console.log(
-                    'Номер телефону "' +
-                      phoneNumber +
-                      '" містить більше 10 цифр.'
-                  );
-                  isValid = false;
-                } else {
-                  isValid = true;
-                }
-              });
-
-              saveButton.disabled = !isValid;
-              if (isValid) {
-                saveButton.classList.remove("button-input-disabled");
-              } else {
-                saveButton.classList.add("button-input-disabled");
-              }
+            input.addEventListener("input", (e) => {
+              input.value =
+                parseInt(e.target.value)?.length <= 10
+                  ? parseInt(e.target.value)
+                  : isNaN(parseInt(e.target.value))
+                  ? ""
+                  : parseInt(e.target.value)?.toString()?.substring(0, 10);
             });
           });
         };
 
-        var addMorePhonesBtn = document.querySelector(
-          ".linked-form__field-add-multiple"
-        );
-
         handleAddEventListener();
-        addMorePhonesBtn.addEventListener("click", () => {
-          console.log("here");
-          handleAddEventListener();
+        addMoreInput.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            setTimeout(handleAddEventListener, 1000);
+          });
         });
+
         return true;
       },
       dpSettings: function () {
@@ -91,6 +69,7 @@ define(["jquery"], function ($) {
         },
       },
       onSave: function () {
+        alert("heere");
         return true;
       },
     };
