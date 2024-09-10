@@ -29,11 +29,11 @@ define(["jquery"], function ($) {
             input.value = input.value.length === 0 ? "38" : input.value;
             input.addEventListener("input", (e) => {
               const formatedValue =
-                parseInt(e.target.value)?.length <= 12
+                parseInt(e.target.value)?.length <= 13
                   ? parseInt(e.target.value)
                   : isNaN(parseInt(e.target.value))
                   ? ""
-                  : parseInt(e.target.value)?.toString()?.substring(0, 12);
+                  : parseInt(e.target.value)?.toString()?.substring(0, 13);
               const isCode = formatedValue?.substring(0, 2) === "38";
               const valueWithCode = isCode
                 ? formatedValue
