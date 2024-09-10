@@ -19,20 +19,27 @@ define(["jquery"], function ($) {
 
         const handleAddEventListener = () => {
           const phoneInputs = document.querySelectorAll(
-            ".card-fields__fields-block .linked-form__field .control-phone__formatted"
-          );
-          const addForm = document.querySelectorAll(
-            ".linked-forms__item_is-add.expanded .linked-form__field .control-phone__formatted"
+            ".control-phone__formatted"
           );
 
-          [...addForm, ...phoneInputs].forEach(function (input) {
+          phoneInputs.forEach((input) => {
+            input.value = input.value.length === 0 ? "38" : input.value;
+          });
+
+          phoneInputs.forEach(function (input) {
+            input.value = input.value.length === 0 ? "38" : input.value;
             input.addEventListener("input", (e) => {
-              input.value =
+              const formatedValue =
                 parseInt(e.target.value)?.length <= 10
                   ? parseInt(e.target.value)
                   : isNaN(parseInt(e.target.value))
                   ? ""
                   : parseInt(e.target.value)?.toString()?.substring(0, 10);
+              const isCode = formatedValue?.substring(0, 2) === "38";
+              const valueWithCode = isCode
+                ? formatedValue
+                : `38${formatedValue?.substring(2)}`;
+              input.value = valueWithCode;
             });
           });
         };
