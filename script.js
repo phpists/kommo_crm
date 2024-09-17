@@ -7,12 +7,14 @@ define(["jquery"], function ($) {
     this.callbacks = {
       settings: function () {},
       init: function () {
+        console.log("init");
         return true;
       },
       bind_actions: function () {
         return true;
       },
       render: function () {
+        console.log("render");
         const addMoreInput = document.querySelectorAll(
           ".linked-form__field-add-multiple"
         );
@@ -27,24 +29,26 @@ define(["jquery"], function ($) {
           });
           phoneInputs.forEach(function (input) {
             input.value = input.value.length === 0 ? "38" : input.value;
-            input.addEventListener("input", (e) => {
-              const formatedValue =
-                parseInt(e.target.value)?.length <= 13
-                  ? parseInt(e.target.value)
-                  : isNaN(parseInt(e.target.value))
-                  ? ""
-                  : parseInt(e.target.value)?.toString()?.substring(0, 13);
-              const isCode = formatedValue?.substring(0, 2) === "38";
-              const valueWithCode = isCode
-                ? formatedValue
-                : `38${formatedValue?.substring(2)}`;
-              input.value = valueWithCode;
-            });
+            if (input.value?.length < 4) {
+              input.addEventListener("input", (e) => {
+                const formatedValue =
+                  parseInt(e.target.value)?.length <= 13
+                    ? parseInt(e.target.value)
+                    : isNaN(parseInt(e.target.value))
+                    ? ""
+                    : parseInt(e.target.value)?.toString()?.substring(0, 13);
+                const isCode = formatedValue?.substring(0, 2) === "38";
+                const valueWithCode = isCode
+                  ? formatedValue
+                  : `38${formatedValue?.substring(2)}`;
+                input.value = valueWithCode;
+              });
+            }
           });
         };
 
         handleAddEventListener();
-        addMoreInput.forEach((btn) => {
+        addMoreInput?.forEach((btn) => {
           btn.addEventListener("click", () => {
             setTimeout(handleAddEventListener, 1000);
           });
@@ -67,6 +71,7 @@ define(["jquery"], function ($) {
         },
       },
       everywhere: function () {
+        console.log("everywhere");
         return true;
       },
       leads: {
@@ -75,7 +80,6 @@ define(["jquery"], function ($) {
         },
       },
       onSave: function () {
-        alert("heere");
         return true;
       },
     };
